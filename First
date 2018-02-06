@@ -1,1 +1,37 @@
-Java
+import java.io.*;
+
+public class Zip {
+
+	public static void main(String[] args) throws Exception {
+			
+		UnzipFile(/*f1, f2*/);
+	}
+	
+	public static void UnzipFile(/*File zipfile, File folder*/) throws Exception{
+		
+		String[] cmd = {"unzip", "src/TestZip.zip"};
+		/*File dir = new File(".");
+		for (File fi : dir.listFiles())
+			System.out.println(fi.getName());
+		
+		*/
+		
+		File f = new File("src/TestZip.zip");
+		System.out.println(f.exists());
+		
+		//System.out.println("Est-ce qu'il existe ? " + zipfile.exists());
+		//System.out.println("Chemin absolu du fichier zip : " + zipfile.getAbsolutePath());
+		//System.out.println("Chemin absolu du dossier : " + folder.getAbsolutePath());
+		
+		try {
+				Runtime r = Runtime.getRuntime();
+				Process p = r.exec(cmd);
+				p.waitFor();
+		                
+			}catch(Exception e) {
+				System.out.println("erreur d'execution " + cmd + e.toString());
+			}
+
+
+	}
+}
