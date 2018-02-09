@@ -1,27 +1,19 @@
 import java.io.*;
 
-public class Zip {
+public class mainClass {
 
 	public static void main(String[] args) throws Exception {
 			
-		UnzipFile(/*f1, f2*/);
+		UnzipFile("src/Soum.zip", "src");
+		CompileFile("src/Soum/compile.java");
 	}
 	
-	public static void UnzipFile(/*File zipfile, File folder*/) throws Exception{
+	public static void UnzipFile(String zipFileName, String destinationUnzipedFile) throws Exception{
 		
-		String[] cmd = {"unzip", "src/TestZip.zip"};
-		/*File dir = new File(".");
-		for (File fi : dir.listFiles())
-			System.out.println(fi.getName());
+		String[] cmd = {"unzip", zipFileName, "-d", destinationUnzipedFile};
 		
-		*/
-		
-		File f = new File("src/TestZip.zip");
+		File f = new File(zipFileName);
 		System.out.println(f.exists());
-		
-		//System.out.println("Est-ce qu'il existe ? " + zipfile.exists());
-		//System.out.println("Chemin absolu du fichier zip : " + zipfile.getAbsolutePath());
-		//System.out.println("Chemin absolu du dossier : " + folder.getAbsolutePath());
 		
 		try {
 				Runtime r = Runtime.getRuntime();
@@ -31,7 +23,26 @@ public class Zip {
 			}catch(Exception e) {
 				System.out.println("erreur d'execution " + cmd + e.toString());
 			}
+	}
+	
+public static void CompileFile(String FileToCompileName) throws Exception{
+		
+		String[] cmd = {"javac", FileToCompileName};
+		
+		File f = new File(FileToCompileName);
+		System.out.println(f.exists()+ "2");
+		
+		try {
+				Runtime r = Runtime.getRuntime();
+				Process p = r.exec(cmd);
+				p.waitFor();
+		                
+			}catch(Exception e) {
+				System.out.println("erreur d'execution " + cmd + e.toString());
+			}
+		File f2 = new File (FileToCompileName);
 
+		System.out.println("Compilation ?"+ f2.exists());
 
 	}
 }
