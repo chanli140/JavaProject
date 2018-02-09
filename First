@@ -1,11 +1,17 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class mainClass {
 
 	public static void main(String[] args) throws Exception {
-			
-		UnzipFile("src/Soum.zip", "src");
-		CompileFile("src/Soum/compile.java");
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez entrer le chemin complet du fichier à dézipper :");
+		String str = sc.nextLine();	
+		UnzipFile(str, "src");
+		System.out.println("Veuillez entrer le nom du fichier à compiler:");
+		String str2 = sc.nextLine();	
+		CompileFile(str2);
 	}
 	
 	public static void UnzipFile(String zipFileName, String destinationUnzipedFile) throws Exception{
@@ -26,10 +32,10 @@ public class mainClass {
 	}
 	
 public static void CompileFile(String FileToCompileName) throws Exception{
+		String FileToCompileCompleteName = FileToCompileName + ".java";
+		String[] cmd = {"javac", FileToCompileCompleteName};
 		
-		String[] cmd = {"javac", FileToCompileName};
-		
-		File f = new File(FileToCompileName);
+		File f = new File(FileToCompileCompleteName);
 		System.out.println(f.exists()+ "2");
 		
 		try {
@@ -40,7 +46,7 @@ public static void CompileFile(String FileToCompileName) throws Exception{
 			}catch(Exception e) {
 				System.out.println("erreur d'execution " + cmd + e.toString());
 			}
-		File f2 = new File (FileToCompileName);
+		File f2 = new File (FileToCompileName + ".class");
 
 		System.out.println("Compilation ?"+ f2.exists());
 
