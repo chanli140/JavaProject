@@ -1,0 +1,69 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class mainClass {
+
+    public static final String CHEMIN = "C:\\workspace\\";
+
+
+    private static BufferedReader getError(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    }
+    
+	public static void main(String[] args) throws Exception {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez entrer le chemin complet du fichier à dézipper :");
+		String str = sc.nextLine();	
+		UnzipFile(str, "src");
+		System.out.println("Veuillez entrer le nom du fichier à compiler:");
+		String str2 = sc.nextLine();	
+		
+		// On lance la commande : javac NomDuFichierACompiler
+        try {
+
+        	String[] cmd = {"javac", str2};
+            Process p = Runtime.getRuntime().exec(cmd);
+            
+            //Un buffer récupère une éventuelle sortie erreur. Puis on l'affiche
+            
+            BufferedReader error = getError(p);
+            String ligne = "";
+            
+           
+            while ((ligne = error.readLine()) != null) {
+                System.out.println("Mauvaise compilation : " + ligne);
+            }
+
+            p.waitFor();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    
+	}
+	
+	    
+	public static void UnzipFile(String zipFileName, String destinationUnzipedFile) throws Exception{
+		
+		String[] cmd = {"unzip", zipFileName, "-d", destinationUnzipedFile};
+		
+		File f = new File(zipFileName);
+		//System.out.println(f.exists());
+		
+		try {
+				Runtime r = Runtime.getRuntime();
+				Process p = r.exec(cmd);
+				p.waitFor();
+		                
+			}catch(Exception e) {
+				System.out.println("erreur d'execution " + cmd + e.toString());
+			}
+	}
+
+///users/chanli140/Bureau/Soum.zip
+///users/chanli140/eclipse-workspace-oxygen-2017/JavaProjectL3/src/Soum/compile.java
+//}
+}
