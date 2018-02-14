@@ -3,17 +3,65 @@ import java.util.Scanner;
 
 public class mainClass {
 
+    public static final String CHEMIN = "C:\\workspace\\";
+
+    private static BufferedReader getOutput(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getInputStream()));
+    }
+
+    private static BufferedReader getError(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    }
+    
 	public static void main(String[] args) throws Exception {
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Veuillez entrer le chemin complet du fichier à dézipper :");
-		String str = sc.nextLine();	
-		UnzipFile(str, "src");
+		//System.out.println("Veuillez entrer le chemin complet du fichier à dézipper :");
+		//String str = sc.nextLine();	
+		//UnzipFile(str, "src");
 		System.out.println("Veuillez entrer le nom du fichier à compiler:");
 		String str2 = sc.nextLine();	
-		CompileFile(str2);
+		//CompileFile(str2);
+		//System.out.println("Veuillez entrer le nom du fichier à exécuter:");
+		//String str3 = sc.nextLine();
+		//ExecuteFile(str3);
+		
+		System.out.println("Début du programme");
+		System.out.println("Veuillez entrer le nom du fichier à exécuter:");
+		String str3 = sc.nextLine();
+        try {
+        	String[] cmd = {"java", "-cp", "/users/chanli140/eclipse-workspace-oxygen-2017/JavaProjectL3/src/",str3};
+            Process p = Runtime.getRuntime().exec(cmd);
+            BufferedReader output = getOutput(p);
+            BufferedReader error = getError(p);
+            String ligne = "";
+            
+            
+
+            while ((ligne = output.readLine()) != null) {
+                System.out.println("pas erreur:" + ligne);
+            }
+           
+            while ((ligne = error.readLine()) != null) {
+                System.out.println("erreur" + ligne);
+            }
+
+            p.waitFor();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Fin du programme");
+    
 	}
 	
+
+
+
+	
+	    
 	public static void UnzipFile(String zipFileName, String destinationUnzipedFile) throws Exception{
 		
 		String[] cmd = {"unzip", zipFileName, "-d", destinationUnzipedFile};
@@ -32,23 +80,71 @@ public class mainClass {
 	}
 	
 public static void CompileFile(String FileToCompileName) throws Exception{
-		String FileToCompileCompleteName = FileToCompileName + ".java";
-		String[] cmd = {"javac", FileToCompileCompleteName};
+		String[] cmd = {"javac", FileToCompileName};
+		//, ">", "/users/chanli140/eclipse-workspace-oxygen-2017/JavaProjectL3/src/test.txt", "2>&1"};
 		
-		File f = new File(FileToCompileCompleteName);
-		System.out.println(f.exists()+ "2");
+		File f = new File(FileToCompileName);
+
 		
 		try {
 				Runtime r = Runtime.getRuntime();
 				Process p = r.exec(cmd);
-				p.waitFor();
-		                
+				p.waitFor();      
 			}catch(Exception e) {
 				System.out.println("erreur d'execution " + cmd + e.toString());
 			}
-		File f2 = new File (FileToCompileName + ".class");
-
-		System.out.println("Compilation ?"+ f2.exists());
-
+		System.out.println(f.exists()+ "2");
 	}
+
+
+
+//public static void ExecuteFile(String FileToCompileName) throws Exception{
+	
+	
+	
+/*	String[] cmd = {"java", FileToCompileName};
+
+
+	Runtime r = Runtime.getRuntime();
+	Process p = r.exec(cmd);
+	
+
+					System.out.println("Début du programme");
+					try {
+						InputStream in = p.getInputStream();
+						BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+						p = r.exec(cmd);
+						p.waitFor();
+						System.out.println("l exitValue est:" + p.exitValue());
+						
+						
+						//System.out.println(reader.readLine());
+				         //for (int i = 0; i < in.available(); i++) {
+				           // System.out.println("il y a " + in.read());
+				         //}
+						BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						String line = "";
+						try {
+							line = reader.readLine();
+							System.out.println("Dans line ya " + line);/users/chanli140/eclipse-workspace-oxygen-2017/JavaProjectL3/src/Soum/compile.java
+							while((line = reader.readLine()) != null) {
+								System.out.println("Flux sortie:" + line);
+								// Traitement du flux de sortie de l'application si besoin est
+							}
+						} finally {
+							reader.close();
+						}
+					} catch(IOExnew InputStreamReader(ception ioe) {
+						ioe.printStackTrace();
+					}
+
+	                
+		}catch(Exception e) {
+			System.out.println("erreur d'execution " + cmd + e.toString());
+		}
+		System.out.println("Fin du programme");*/
+		
+///users/chanli140/Bureau/Soum.zip
+///users/chanli140/eclipse-workspace-oxygen-2017/JavaProjectL3/src/Soum/compile.java
+//}
 }
