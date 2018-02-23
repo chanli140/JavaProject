@@ -1,0 +1,42 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class ClasseTest {
+
+	private static BufferedReader getOutput(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getInputStream()));
+}
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez entrer le nom du test à compiler:");
+		String str2 = sc.nextLine();	
+		
+        try {
+        	
+        	String[] cmd = {"javac", "-cp",".:junit-4.12.jar:hamcrest-core-1.3.jar", str2};
+        	//javac -cp /users/chanli140/Bureau/AsterixObelix/junit-4.12.jar:/users/chanli140/Bureau/AsterixObelix/hamcrest-core-1.3.jar:/users/chanli140/Bureau/AsterixObelix /users/chanli140/Bureau/AsterixObelix/TestProjet.java
+            Process p = Runtime.getRuntime().exec(cmd);
+            
+            
+            BufferedReader output = getOutput(p);
+            String ligne = "";
+            
+           
+            while ((ligne = output.readLine()) != null) {
+                System.out.println("pas erreur:" + ligne);
+                }
+
+            p.waitFor();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    
+	}
+	
+
+}
